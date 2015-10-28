@@ -71,16 +71,21 @@ class Link(Attr):
 
 
 class CleanHTML(Filter):
+    def __init__(self, selector=None, options=None, default=_NO_DEFAULT):
+        super(CleanHTML, self).__init__(selector=selector, default=default)
+        self.options = options
+
     def filter(self, txt):
         if isinstance(txt, (tuple, list)):
-            return u' '.join([self.clean(item) for item in txt])
-        return self.clean(txt)
+            return u' '.join([self.clean(item, self.options) for item in txt])
+        return self.clean(txt, self.options)
 
     @classmethod
-    def clean(cls, txt):
+    def clean(cls, txt, options=None):
         if not isinstance(txt, basestring):
             txt = html.tostring(txt, encoding=unicode)
-        return html2text(txt)
+        options = options or {}
+        return html2text(txt, **options)
 
 
 class UnrecognizedElement(Exception):

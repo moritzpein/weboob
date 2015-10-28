@@ -131,6 +131,7 @@ def install_weboob():
         'PyYAML',
         'prettytable',
         'google-api-python-client',
+        'html2text>=3.200',
     ]
     try:
         import Image
